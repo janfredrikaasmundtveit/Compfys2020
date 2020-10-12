@@ -6,17 +6,10 @@ CPPflags= c++ -O3
 LIB = -larmadillo -llapack -lblas
 # Here we define the name of the executable
 PROG= project3.exe
-${PROG} :	   	main.o verlet.o force.o totforce.o
-			${CPPflags} main.o verlet.o force.o totforce.o ${LIB} -o ${PROG}
+${PROG} :	   	main.o setup.o
+			${CPPflags} main.o setup.o  ${LIB} -o ${PROG}
 
-main.o :			main.cpp 
+main.o :		main.cpp 
 		        	${CPPflags} -c main.cpp
-
-verlet.o :			verlet.cpp 
-		        	${CPPflags} -c verlet.cpp
-
-force.o :			force.cpp 
-		        	${CPPflags} -c force.cpp
-
-totforce.o :		totforce.cpp 
-		        	${CPPflags} -c totforce.cpp
+setup.o :		setup.cpp 
+		        	${CPPflags} -c setup.cpp

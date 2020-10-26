@@ -17,6 +17,6 @@ The file planet.h contains several classes needed for the program. theese clases
 The c++ file setup.cpp contains all the relevant setups of different subsystems, aswell as the full solarsystem with realistic inital condition.
 
 The full program takes 5 inputs: first a filename, second the number of timsteps, third second a the number of years the system should be evolved over (double), fourth   the interger option, fifth the interger spesifiing the method th solver should usesee solver class.
-the integer option  takes 6 different values: choose system 0 for full solarsystem, system 1 for sun-earth sytem, system 2 for sun-earth-jupiter system
-		//, system 3 for sun mercury with GR correction, system 4 to vary beta and output E,l; option 5 to study escape velocities.
+the integer option  takes 6 different values: choose system 0 for full solarsystem, system 1 for sun-earth sytem, system 2 for sun-earth-jupiter system, system 3 for sun mercury with GR correction, system 4 to vary beta and output E,l; option 5 to study escape velocities.
 
+the folder obsolete contains various functions later made into member functions.

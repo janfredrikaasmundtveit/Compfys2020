@@ -17,7 +17,7 @@ class coord{
 	inline coord operator- (const coord& c){
   		 return coord(x-c.x,y-c.y);
 	}
-	inline coord operator* (double s){
+	inline coord operator* (double s){//scalar multiplication, not scalars can only be multiplied from the right
   		 return coord(s*x,s*y);
 	}
 	double r(){return x*x+y*y;} //returns vector(dot)vector
@@ -46,7 +46,7 @@ class planet{
 		E=0.5*m*v.r()+G/pow(sqrt(q.r()),beta-1.0);//kinetic+potential energy. here only the gravitional potential of the sun is included. M_s=1.
 	}
 	void updatel(){
-		l=fabs(m*v.y*q.x-m*v.x*q.y); //sign will not be important 
+		l=fabs(m*v.y*q.x-m*v.x*q.y); //overallsign will not be important 
 	}
 	
 	int findper(){
@@ -80,14 +80,15 @@ public:
 		double pi=acos(-1.0);
 		double G=4*pi*pi; //newtons constant in au/y
 		double c=63197.8; //speed of light in AU/y
-		coord d;
-		d=p2.q-p1.q;
+		coord d,F;
+		d=p1.q-p2.q;
 		double R=sqrt(d.x*d.x+d.y*d.y); 
 		double s=G*p1.m*p2.m/(pow(R,beta+1));	
-		coord F=d*s;
-
+		if(rel==0){
+			 F=d*s;
+		}
 		if(rel==1){//relatisvistic correction
-			F=F*(1.0+3.0*p1.l*p1.l/(R*R*c*c));
+			F=d*s*(1.0+3.0*p1.l*p1.l/(R*R*c*c));
 		}
 		return F;
 }
@@ -103,15 +104,14 @@ public:
 
 
  	void step(double h,double beta, int rel){
- 		coord ftemp; 
-	 
+ 		
  	if(method==0){//verlet
 	 	coord prevF;	
 	 
-			for(int i=1;i<s.size;i++){//incud 0 in loop if sun shoud be dynamic
+			for(int i=1;i<s.size;i++){//incude 0 in loop if sun shoud be dynamic
 				double minv=1.0/s.p[i].m;
 				prevF=s.p[i].F;
-				s.p[i].q=s.p[i].q+s.p[i].v*h+s.p[i].F*minv*0.5*h*h;
+				s.p[i].q=s.p[i].q+s.p[i].v*h+s.p[i].F*0.5*minv*h*h;
 				s.p[i].F=s.totforce(i,beta,rel);
 				s.p[i].v=s.p[i].v+(s.p[i].F+prevF)*h*0.5*minv;
 				s.p[i].updateE(beta);

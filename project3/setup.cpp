@@ -12,7 +12,8 @@
 solarsystem setup(int option,double beta,int rel){
 	solarsystem s;
 	//initial positions(AU) and velocities (AU/day), also declare force but set to 0.
-	coord sunqi(0.0,0.0); coord sunvi(1.0,1.0);	coord sunFi(0.0,0.0); 
+	coord sunqi(0.0,0.0); coord sunvi(0.0,0.0);	coord sunFi(0.0,0.0); 
+	//coord sunqi(-1.550668714070811E-04,7.251508601760199E-03); coord sunvi(-7.588255259323373E-06, 2.581757885123079E-06);	coord sunFi(0.0,0.0); 
 	coord mqi(-3.009168510839890E-01,7.465585461322467E-03); coord mvi(1.527008630750197E-02,-1.743504723628711E-02);	coord mfi(0.0,0.0); 
 	coord vqi(7.252714351031906E-01,7.465585461322467E-03); coord vvi(-1.009455335419807E-04,2.013651840696968E-02); coord vfi(0.0,0.0);
 	coord eqi(9.763619062330592E-01,2.225327099640603E-01); coord evi(-3.988919278934853E-03,1.674541445029773E-02); coord efi(0.0,0.0);
@@ -54,13 +55,19 @@ solarsystem setup(int option,double beta,int rel){
 
 	if(option==3){
 	//sun-mercury system
+		coord rmqi=(0.3075,0);
+		coord rmvi=(0,12.44/365);
+		planet relmerc(1.5E-7,0.0,rmqi,rmvi,mfi); // starting at perehelion x=0
 		s.setsize(2);
-		s.addplanet(sun,0); s.addplanet(mercury,1);
+		s.addplanet(sun,0); s.addplanet(relmerc,1);
 	}
 
 	for (int i = 0; i < s.size; i++)
 	{	s.p[i].F=s.totforce(i,beta,rel); //computing intial force
 		s.p[i].v=s.p[i].v*365.0;//converting from AU/day to Au/y
+		s.p[i].updateE(beta); 	
+		s.p[i].updatel();
+
 
 	}
 

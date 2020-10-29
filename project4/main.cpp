@@ -9,7 +9,6 @@
 #include <time.h>
 #include <random>
 #include<armadillo>
-#include "vectormatrixclass.h"
 
 using namespace arma;
 using namespace std;
@@ -97,32 +96,28 @@ return 0;
 }
 
 void mcsampling(int MCC, double temp, double pross,int NSpin,double LocE[], mat &lattice, double &Energy,double &MagneticMoment){
-std::random_device rd;
+  std::random_device rd;
   std::mt19937_64 gen(rd())
   // Set up the uniform distribution for x \in [[0, 1]
   std::uniform_real_distribution<double> RandomNumberGenerator(0.0,1.0);
-    temp=temp+pross;
-  	int totspin=NSpin*NSpin;
-  	vec EnergyDifference=zeros<vec>(17); 
-    //double* E= new double[4*totspin];
+  temp=temp+pross;
+  int totspin=NSpin*NSpin;
+  vec EnergyDifference=zeros<vec>(17); 
+   
 
-  for( int de =-8; de <= 8; de+=4){ EnergyDifference(de+8) = exp(-de/temp);} // using actual energy not just above groundtate
+  for( int de =-8; de <= 8; de+=4){ 
+    EnergyDifference(de+8) = exp(-de/temp); // using actual energy not just above groundtate
 
-  		for (int i = 0; i < MCC; i++)
-  			{
-  			 for(int j=0; j<totspin; j++){
-  			  	int ix = (int) (RandomNumberGenerator(gen)*(NSpin));
-     			int iy = (int) (RandomNumberGenerator(gen)*(NSpin));
-			
-				
-       
-			int deltaE=2*lattice(ix,iy)*(lattice(ix,(iy+1)%NSpin)+lattice(ix,(iy+(NSpin)-1)%NSpin)+lattice((ix+1)%NSpin,iy)+lattice((ix+(NSpin)-1)%NSpin,iy));
-				  
-           
-				  
-   				if( RandomNumberGenerator(gen) <= EnergyDifference(deltaE+8)){
+  }		
+  for (int i = 0; i < MCC; i++){
+  	for(int j=0; j<totspin; j++){
+  			int ix = (int) (RandomNumberGenerator(gen)*(NSpin));
+     		int iy = (int) (RandomNumberGenerator(gen)*(NSpin));
+		
+		  	int deltaE=2*lattice(ix,iy)*(lattice(ix,(iy+1)%NSpin)+lattice(ix,(iy+(NSpin)-1)%NSpin)+lattice((ix+1)%NSpin,iy)+lattice((ix+(NSpin)-1)%NSpin,iy));
+				    
+   			if( RandomNumberGenerator(gen) <= EnergyDifference(deltaE+8)){
    					lattice(ix,iy) *=-1.0;
-   				
    				MagneticMoment += 2.0*lattice(ix,iy);
 			  	Energy = Energy+((double)(deltaE));
       
@@ -130,24 +125,15 @@ std::random_device rd;
    				}	
    				
    		 }
-       
-       //ofile << setw(15) << setprecision(8) << i;
-       //ile << setw(15) << setprecision(8) << Energy/totspin << "\n";
      
    		if(i>1000){
-   		//int k= (int) Energy+NSpin*NSpin*(2);
-      // E[k] +=1;
+   
    		  LocE[0] +=Energy; LocE[1] +=Energy*Energy; LocE[2] +=MagneticMoment; LocE[3] +=MagneticMoment*MagneticMoment; LocE[4] +=fabs(MagneticMoment);
-			    	//ofile << setw(15) << setprecision(8) << i;
-
-   			//ofile << setw(15) << setprecision(8) << Energy << "\n";
+			
 			   }
     }
  
-//   for (int l = 0; l <=4*totspin ; ++l)
-  // { ofile << setw(15) << setprecision(8) << l-2*totspin;
-    // ofile << setw(15) << setprecision(8) << E[l] << "\n";
-  // }
+
 }
 
 void output(double temp, int NSpin, int MCC,double TotE[],int NProcesses){

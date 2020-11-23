@@ -42,7 +42,7 @@ void mcsampling(int MCC, double temp,int NSpin, mat &lattice,double *Energy,doub
             lattice(ix,iy) *=-1.0;
             *Energy +=((double)(deltaE));
             *MagneticMoment+=2.0*lattice(ix,iy); 
-            accepted++;
+            *accepted++;
           } 
           
        

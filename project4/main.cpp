@@ -111,7 +111,7 @@ MPI_Init (&argc, &argv);
     MCC=pow(10,mc);
     ITemp =2.0;
     FTemp = 2.3;
-    TempStep = 1;
+    TempStep = 0.01;
   }
 
 

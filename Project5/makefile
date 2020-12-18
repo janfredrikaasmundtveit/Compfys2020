@@ -1,15 +1,39 @@
 # Comment lines
 # General makefile for c++ - choose PROG =   name of given program
 # Here we define compiler option, libraries and the  target
-CPPflagsmp= mpic++ -O3
 CPPflags= c++ -O3
 # Here we define the library functions we nee
-LIB = -larmadillo -llapack -lblas
+LIB = -larmadillo -llapack -lblas 
 
-all: project5.exe
-project5.exe :	   	main.o 
-			${CPPflagsmp} main.o  ${LIB} -o project5.exe
+all: alpha.exe beta.exe alpha2.exe opptimizedaandb.exe
+alpha.exe :	   	alpha.o 
+			${CPPflags} alpha.o  ${LIB} -o alpha.exe
 
-main.o :		main.cpp 
-		        	${CPPflagsmp} -c main.cpp
+alpha.o :		alpha.cpp 
+		        	${CPPflags} -c alpha.cpp
+
+beta.exe :	   	beta.o 
+			${CPPflags} beta.o  ${LIB} -o beta.exe
+
+beta.o :		beta.cpp 
+		        	${CPPflags} -c beta.cpp
+alpha2.exe :	   	alpha2.o 
+			${CPPflags} alpha2.o  ${LIB} -o alpha2.exe
+
+alpha2.o :		alpha2.cpp 
+		        	${CPPflags} -c alpha2.cpp
+
+opptimizedaandb.exe : 	opptimizedaandb.o 
+			${CPPflags} opptimizedaandb.o   ${LIB} -o opptimizedaandb.exe
+
+opptimizedaandb.o :		opptimizedaandb.cpp 
+		        	${CPPflags} -c opptimizedaandb.cpp
+
+
+
+
+
+
+
+
 
